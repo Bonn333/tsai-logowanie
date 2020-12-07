@@ -47,7 +47,7 @@
       <?php
 error_reporting(0);
 session_start();
-    
+    // wiem, md5 kinda ugh ale nie chce mi sie inaczej 
    if (isset($_GET["add"])){
       if($error!=1){
                class Baza extends SQLite3

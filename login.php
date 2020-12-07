@@ -1,3 +1,4 @@
+<!--- To jest rak, jestem straszny, Bieniek Michał -->
 <html>
 <head>
     <title>System logowania - Logowanie</title>
@@ -35,13 +36,65 @@
   
   <!-- Kontener/body -->
   <body class="text-center">
-    <form class="form-signin">
+    <form class="form-signin" method="post" role="form" action="login.php?login=true">
       <i class="mb-4 fas fa-user fa-3x" alt=""></i>
       <h1 class="h3 mb-3 font-weight-normal">Logowanie</h1>
-      <label for="InputUsername" class="sr-only">Nazwa użytkownika</label>
-      <input type="email" id="inputEmail" class="form-control" placeholder="Nazwa użytkownika" required autofocus>
-      <label for="inputPassword" class="sr-only">Hasło</label>
-      <input type="password" id="inputPassword" class="form-control" placeholder="Hasło" required>
+
+
+      <?php
+error_reporting(1);
+session_start();
+     if (isset($_GET["login"])){
+          class Baza extends SQLite3
+   {
+      function __construct()
+      {
+         $this->open('baza.db');
+      }
+   }
+   $db = new Baza();
+   if(!$db){
+      echo $db->lastErrorMsg();
+   } else {
+      // echo "Opened database successfully\n";
+   }
+// wiem, md5 kinda ugh ale nie chce mi sie inaczej 
+   $sql ='SELECT * from USERS where USERNAME="'.$_POST["username"].'";';
+
+
+   $ret = $db->query($sql);
+   while($row = $ret->fetchArray(SQLITE3_ASSOC) ){
+      $id=$row['ID'];
+      $username=$row["USERNAME"];
+      $password=$row['PASSWORD'];
+  }
+    if ($id!=""){
+        if ($password==md5($_POST["password"])){
+           $_SESSION["login"]=$username;
+           echo '<div class="alert alert-primary" role="alert">';
+           echo 'Witaj, <b>'.$username. ' </b>i guess? Nie robiłem redirów i innych podrzędnych rzeczy na ten moment, just to co napisane w treści';
+           echo '</div>'; // to i tak nie działa, nie chciało mi się poprawiać,ale no, rediruje po zalogowaniu
+        }else{
+          echo '<div class="alert alert-primary" role="alert">';
+          echo "Nieprawidłowe hasło";
+          echo '</div>';
+        }
+      }else{
+       echo '<div class="alert alert-primary" role="alert">';
+       echo "Użytkownik nie istnieje";
+       echo '</div>';
+      }
+   //echo "Operation done successfully\n";
+   $db->close();
+     }
+
+?>
+
+
+      <label for="username" class="sr-only">Nazwa użytkownika</label>
+      <input type="text" id="username" name="username" class="form-control" placeholder="Nazwa użytkownika" required autofocus>
+      <label for="password" class="sr-only">Hasło</label>
+      <input type="password" id="password" name="password" class="form-control" placeholder="Hasło" required>
       <div class="checkbox mb-3">
         <label>
           <input type="checkbox" value="remember-me"> Zapamiętaj mnie
