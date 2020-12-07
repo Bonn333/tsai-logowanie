@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>System logowania - rejestracja</title>
+    <title>System logowania - Logowanie</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="node_modules/bootswatch/dist/darkly/bootstrap.min.css">
